@@ -15,7 +15,7 @@ function HaritayiOlustur()
     grid.innerHTML = "";
     let slotSayaci = 1;
     for(let i=1; i<=50; i++) 
-        {
+    {
         if (i % 5 === 3)  //! kısmını 5'e böler 3. kısmını kontrol eder.
         {
             const yol = document.createElement("div");
@@ -43,8 +43,8 @@ function HaritayiOlustur()
 }
 
 plakaInput.addEventListener("input", function() 
-{ 
-    this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');  //! plakanın başındaki ve sondaki  boşlukları alır ve harfleri büyük yapar.
+{ //! burada türkçe karakterleri ekledik ÇŞİĞÜÖ yü yani
+ this.value = this.value.toUpperCase().replace(/[^A-Z0-9ÇŞİĞÜÖ]/g, '');  //! plakanın başındaki ve sondaki  boşlukları alır ve harfleri büyük yapar.
 });
 
 // ARAMA MOTORU
@@ -83,7 +83,9 @@ document.querySelector("#ekleBtn").addEventListener("click", () =>
     {
     const plaka = plakaInput.value.trim();
     if(!seciliSlot || seciliSlot.classList.contains("dolu")) return MesajGoster("Önce boş yer seç!","hata"); //! dolu  slot seçmesini engeller.
-    if(!/^[0-9]{2}[A-Z]{1,3}[0-9]{2,4}$/.test(plaka)) return MesajGoster("Plaka hatalı!","hata"); //! türkiye tarzı plaka yazmasını sağlarız.
+    
+    // BURAYI DÜZELTTİK: Regex içine Türkçe karakterleri (ÇŞİĞÜÖ) ekledik
+    if(!/^[0-9]{2}[A-ZÇŞİĞÜÖ]{1,3}[0-9]{2,4}$/.test(plaka)) return MesajGoster("Plaka hatalı!","hata"); //! türkiye tarzı plaka yazmasını sağlarız.
     
     seciliSlot.textContent = plaka; //! seçtiğimiz slota plakayı yazdırırız.
     seciliSlot.className = "slot dolu"; //! classını değiştiririz.
@@ -110,7 +112,7 @@ document.querySelector("#silBtn").addEventListener("click", () =>
     toplamCiro += ucret;
     localStorage.setItem("toplamCiro", toplamCiro);
     
-    HareketBlokEkle(arac.plaka, giris.toLocaleTimeString(), cikis.toLocaleTimeString(), `${toplamSaat} sa`, ucret);
+    HareketBlokEkle(arac.plaka, giris.toLocaleTimeString(), cikis.toLocaleTimeString(), `${toplamSaat} saat`, ucret);
     araclar.splice(index, 1);
     localStorage.setItem("araclar", JSON.stringify(araclar));
     
@@ -166,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () =>
     setInterval(() => document.getElementById("saat").textContent = new Date().toLocaleTimeString(), 1000);
 });
 
+//! Karanlık-Aydınlık Tema
 const tBtn = document.getElementById("Tema");
 tBtn.addEventListener("click", () => 
 {
