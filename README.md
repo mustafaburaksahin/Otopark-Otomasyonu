@@ -1,34 +1,34 @@
 🅿️ Otopark Otomasyon Sistemi
-Bu proje, otopark yönetimini dijitalleştiren, kullanıcı dostu ve modern bir arayüze sahip bir web uygulamasıdır. Araç giriş-çıkış takibi, ücret hesaplama ve canlı doluluk durumu gibi özellikleri içerisinde barındırır.
 
-🚀 Proje Özellikleri
-Dinamik Otopark Haritası: 40 araçlık interaktif bir grid sistemi. Yol alanları ve giriş-çıkış yönlendirmeleriyle gerçekçi bir yerleşim planı sunar.
+Bu proje, otopark yönetimini dijitalleştiren, kullanıcı dostu ve modern arayüze sahip bir web uygulamasıdır.
+Araç giriş-çıkış takibi, ücret hesaplama ve anlık doluluk durumu gibi temel ihtiyaçları karşılamak üzere geliştirilmiştir.
 
-Gelişmiş Araç Kayıt Sistemi:
-
-Akıllı Plaka Kontrolü: Sadece Türkiye plaka formatına (Örn: 38ABC123) uygun girişleri kabul eder ve Türkçe karakter desteği (Ç, Ş, İ, Ğ, Ü, Ö) sunar.
-
-Hızlı Giriş: Boş bir slot seçip plaka girerek anında kayıt oluşturulur.
-
-Ücretlendirme Mantığı:
-
-İlk 1 saat tamamen ücretsizdir.
-
-1 saatten sonraki her saat için otomatik olarak 40 TL ücret hesaplanır.
-
-Anlık Arama ve Filtreleme: Harita üzerindeki "Plaka Ara" özelliği ile dolu slotlar arasında süzme yapılır; aranan araç parlatılırken diğerleri soluklaştırılarak görsel kolaylık sağlanır.
-
-Kalıcı Veri (Local Storage): Sayfa yenilense bile araç listesi, işlem geçmişi (loglar) ve toplam ciro asla kaybolmaz.
-
-İşlem Geçmişi (Log): Yapılan her çıkış işlemi; plaka, çıkış saati, kalınan süre ve ödenen ücret bilgisiyle birlikte "Durum" panelinde listelenir.
-
-Tema Desteği: Tek tıkla Gece (Dark) ve Gündüz (Light) modları arasında geçiş yapılabilir.
-
+🚀 Özellikler
+🗺️ Dinamik Otopark Haritası
+40 araç kapasiteli interaktif grid sistemi
+Gerçekçi yerleşim: yol alanları ve giriş-çıkış yönlendirmeleri
+🚗 Araç Kayıt Sistemi
+Plaka doğrulama: Türkiye plaka formatına uygun giriş (örn: 38ABC123)
+Türkçe karakter desteği (Ç, Ş, İ, Ğ, Ü, Ö)
+Boş slot seçilerek hızlı araç kaydı
+💰 Ücretlendirme
+İlk 1 saat ücretsiz
+Sonraki her saat için 40 TL otomatik ücretlendirme
+Süre hesaplama: giriş-çıkış zaman farkına göre
+🔍 Arama & Filtreleme
+“Plaka Ara” özelliği ile anlık filtreleme
+Aranan araç vurgulanır, diğerleri soluklaştırılır
+💾 Kalıcı Veri
+Tüm veriler (araçlar, loglar, ciro) localStorage üzerinde saklanır
+Sayfa yenilense bile veri kaybı olmaz
+📊 İşlem Geçmişi
+Çıkış yapan araçlar loglanır
+Plaka, süre ve ücret bilgileri görüntülenir
+🌗 Tema Desteği
+Dark / Light mode geçişi
 🛠️ Teknik Detaylar
-Veri Yönetimi: Araç bilgileri ve finansal veriler tarayıcının localStorage alanında JSON formatında tutulur.
-
-DOM Manipülasyonu: JavaScript ile dinamik olarak HTML elementleri üretilir ve slotların doluluk durumuna göre CSS class'ları (.dolu, .bos) anlık değiştirilir.
-
-Hesaplama Mantığı: Araç giriş-çıkış zamanları arasındaki fark ISOString formatından milisaniyeye çevrilerek tam saat hesabı üzerinden ücretlendirilir.
-
-Hata Yönetimi: Hatalı plaka girişi veya seçim yapılmadan işlem yapılması durumunda kullanıcıya görsel bildirim (pop-up) verilir.
+Veri Yönetimi: localStorage (JSON formatında)
+Dinamik Arayüz: JavaScript ile DOM manipülasyonu
+Durum Yönetimi: Slotlar .dolu / .bos class’ları ile güncellenir
+Zaman Hesabı: ISO formatından milisaniye bazlı süre hesaplama
+Hata Yönetimi: Geçersiz işlem durumlarında kullanıcıya bildirim (pop-up)
