@@ -9,15 +9,11 @@ const grid = document.getElementById("grid");
 const modal = document.querySelector("#onayModal");
 let seciliSlot = null;
 
-// HARİTA VE SLOTLARI OLUŞTUR
-function HaritayiOlustur() 
-{
+function HaritayiOlustur() {
     grid.innerHTML = "";
     let slotSayaci = 1;
-    for(let i=1; i<=50; i++) 
-    {
-        if (i % 5 === 3)  //! kısmını 5'e böler 3. kısmını kontrol eder.
-        {
+    for(let i=1; i<=50; i++) {
+        if (i % 5 === 3) {
             const yol = document.createElement("div");
             yol.className = "yol-alani";
             grid.appendChild(yol);
@@ -27,14 +23,12 @@ function HaritayiOlustur()
         const div = document.createElement("div");
         div.id = id;
         const kayitli = araclar.find(a => a.slotId === id);
-        if(kayitli) 
-        {
-            div.className = "slot dolu"; // cllasını dolu yapar.
-            div.textContent = kayitli.plaka; //! plakayı slotun içine ekler.
-        } else 
-        {
-            div.className = "slot bos"; // classını boş yapar.
-            div.textContent = "BOŞ"; //! slotun içine BOŞ yazar.
+        if(kayitli) {
+            div.className = "slot dolu";
+            div.textContent = kayitli.plaka;
+        } else {
+            div.className = "slot bos";
+            div.textContent = "BOŞ";
         }
         grid.appendChild(div);
         slotSayaci++;
@@ -42,63 +36,67 @@ function HaritayiOlustur()
     }
 }
 
-plakaInput.addEventListener("input", function() 
-{ //! burada türkçe karakterleri ekledik ÇŞİĞÜÖ yü yani
- this.value = this.value.toUpperCase().replace(/[^A-Z0-9ÇŞİĞÜÖ]/g, '');  //! plakanın başındaki ve sondaki  boşlukları alır ve harfleri büyük yapar.
+plakaInput.addEventListener("input", function() {
+    this.value = this.value.toUpperCase().replace(/[^A-Z0-9ÇŞİĞÜÖ]/g, '');
 });
 
-// ARAMA MOTORU
-aramaInput.addEventListener("input", function() 
-{
+aramaInput.addEventListener("input", function() {
     const aranan = this.value.toUpperCase().trim();
     document.querySelectorAll(".slot").forEach(slot => {
-        if (aranan === "") 
-        { 
-            slot.classList.remove("arama-bulundu", "arama-soluk"); return;  // 2 cllas özelliklerini siler ve durdurur.
+        if (aranan === "") {
+            slot.classList.remove("arama-bulundu", "arama-soluk"); 
+            return;
         }
-        if (slot.classList.contains("dolu") && slot.textContent.includes(aranan))  //! includes içinde var mı diye kontrol eder.
-        {
-            slot.classList.add("arama-bulundu"); slot.classList.remove("arama-soluk"); //! arama bulunur ise  arama-bulundu class'ı eklenir arama-soluk class'ı silinir.
-        } 
-        else 
-        { 
-            slot.classList.add("arama-soluk"); slot.classList.remove("arama-bulundu");  //! arama bulunmaz ise arama-soluk class'ı eklenir arama-bulunu class'ı silinir.
+        if (slot.classList.contains("dolu") && slot.textContent.includes(aranan)) {
+            slot.classList.add("arama-bulundu"); 
+            slot.classList.remove("arama-soluk");
+        } else {
+            slot.classList.add("arama-soluk"); 
+            slot.classList.remove("arama-bulundu");
         }
     });
 });
 
-grid.addEventListener("click", (e) => 
-{
-    if(e.target.classList.contains("slot")) 
-    {
-        document.querySelectorAll(".slot").forEach(s => s.style.borderColor = "transparent"); //! transparent kodu tamamen şeffaf olmasını sağlar.
-        e.target.style.borderColor = "#fff"; // slotun etrafının beyaz yapar.
+grid.addEventListener("click", (e) => {
+    if(e.target.classList.contains("slot")) {
+        document.querySelectorAll(".slot").forEach(s => s.style.borderColor = "transparent");
+        e.target.style.borderColor = "#fff";
         seciliSlot = e.target;
         plakaInput.focus();
     }
 });
 
-// ARAÇ GİRİŞİ
-document.querySelector("#ekleBtn").addEventListener("click", () => 
-    {
+document.querySelector("#ekleBtn").addEventListener("click", () => {
     const plaka = plakaInput.value.trim();
-    if(!seciliSlot || seciliSlot.classList.contains("dolu")) return MesajGoster("Önce boş yer seç!","hata"); //! dolu  slot seçmesini engeller.
+    if(!seciliSlot || seciliSlot.classList.contains("dolu")) return MesajGoster("Önce boş yer seç!","hata");
+    if(!/^[0-9]{2}[A-ZÇŞİĞÜÖ]{1,3}[0-9]{2,4}$/.test(plaka)) return MesajGoster("Plaka hatalı!","hata");
     
-    // BURAYI DÜZELTTİK: Regex içine Türkçe karakterleri (ÇŞİĞÜÖ) ekledik
-    if(!/^[0-9]{2}[A-ZÇŞİĞÜÖ]{1,3}[0-9]{2,4}$/.test(plaka)) return MesajGoster("Plaka hatalı!","hata"); //! türkiye tarzı plaka yazmasını sağlarız.
-    
-    seciliSlot.textContent = plaka; //! seçtiğimiz slota plakayı yazdırırız.
-    seciliSlot.className = "slot dolu"; //! classını değiştiririz.
-    araclar.push({ plaka, slotId: seciliSlot.id, girisZamani: new Date().toISOString() }); //! push kodu araclar kısmının array'ına kaydediyor
-    localStorage.setItem("araclar", JSON.stringify(araclar)); //! araclar classını localstogare'ye kaydeder.
+    seciliSlot.textContent = plaka;
+    seciliSlot.className = "slot dolu";
+    araclar.push({ plaka, slotId: seciliSlot.id, girisZamani: new Date().toISOString() });
+    localStorage.setItem("araclar", JSON.stringify(araclar));
     plakaInput.value = "";
     GuncelleOzet();
     MesajGoster("Giriş Başarılı", "basari");
 });
 
-// ARAÇ ÇIKIŞI (1 SAAT ÜCRETSİZ)
-document.querySelector("#silBtn").addEventListener("click", () => 
-    {
+// YENİ: PLAKA GÜNCELLEME BUTONU (SÜREYİ KORUR)
+document.querySelector("#updateBtn").addEventListener("click", () => {
+    const yeniPlaka = plakaInput.value.trim().toUpperCase();
+    if(!seciliSlot || !seciliSlot.classList.contains("dolu")) return MesajGoster("Önce dolu bir yer seç!","hata");
+    if(!/^[0-9]{2}[A-ZÇŞİĞÜÖ]{1,3}[0-9]{2,4}$/.test(yeniPlaka)) return MesajGoster("Yeni plaka hatalı!","hata");
+
+    const index = araclar.findIndex(a => a.slotId === seciliSlot.id);
+    if(index !== -1) {
+        araclar[index].plaka = yeniPlaka; // Sadece plakayı değiştiriyoruz, giriş zamanı sabit kalıyor.
+        localStorage.setItem("araclar", JSON.stringify(araclar));
+        seciliSlot.textContent = yeniPlaka;
+        plakaInput.value = "";
+        MesajGoster("Plaka güncellendi, süre devam ediyor", "basari");
+    }
+});
+
+document.querySelector("#silBtn").addEventListener("click", () => {
     if(!seciliSlot || !seciliSlot.classList.contains("dolu")) return MesajGoster("Dolu bir yer seç!","hata");
     
     const index = araclar.findIndex(a => a.slotId === seciliSlot.id);
@@ -122,7 +120,6 @@ document.querySelector("#silBtn").addEventListener("click", () =>
     MesajGoster(ucret > 0 ? `${ucret} TL Alındı` : "Ücretsiz Çıkış", "basari");
 });
 
-// CİRO SIFIRLAMA MANTIĞI
 document.querySelector("#sifirlaBtn").addEventListener("click", () => modal.style.display = "flex");
 document.querySelector("#vazgecBtn").addEventListener("click", () => modal.style.display = "none");
 document.querySelector("#kesinSifirlaBtn").addEventListener("click", () => {
@@ -140,8 +137,7 @@ function GuncelleOzet() {
     document.querySelector("#gunlukCiro").textContent = `💰 Ciro: ${toplamCiro} TL`;
 }
 
-function HareketBlokEkle(plaka, giris, cikis, sure, ucret, kaydet = true) 
-{
+function HareketBlokEkle(plaka, giris, cikis, sure, ucret, kaydet = true) {
     const blok = document.createElement("div");
     blok.className = "hareket-blok";
     blok.innerHTML = `<strong>🚗 ${plaka}</strong><br>Çıkış: ${cikis} | 💰 ${ucret} TL<br>Süre: ${sure}`;
@@ -153,25 +149,21 @@ function HareketBlokEkle(plaka, giris, cikis, sure, ucret, kaydet = true)
     }
 }
 
-function MesajGoster(m, t) 
-{
+function MesajGoster(m, t) {
     const k = document.getElementById("mesaj");
     k.textContent = m; k.className = `goster ${t}`;
     setTimeout(() => k.className = "", 3000);
 }
 
-document.addEventListener("DOMContentLoaded", () => 
-{
+document.addEventListener("DOMContentLoaded", () => {
     HaritayiOlustur();
     [...hareketler].reverse().forEach(h => HareketBlokEkle(h.plaka, h.giris, h.cikis, h.sure, h.ucret, false));
     GuncelleOzet();
     setInterval(() => document.getElementById("saat").textContent = new Date().toLocaleTimeString(), 1000);
 });
 
-//! Karanlık-Aydınlık Tema
 const tBtn = document.getElementById("Tema");
-tBtn.addEventListener("click", () => 
-{
+tBtn.addEventListener("click", () => {
     document.body.classList.toggle("Beyaz-mode");
     const m = document.body.classList.contains("Beyaz-mode") ? "beyaz" : "koyu";
     localStorage.setItem("tema", m);
